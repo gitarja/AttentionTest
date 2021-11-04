@@ -2,3 +2,12 @@ Games
 Results/EvaluationResults
 Results/TrainingResults
 .idea
+Conf/__pycache__
+Controllers/__pycache__
+DataAnalyze/__pycache__
+DB/__pycache__
+Examples/__pycache__
+Models/__pycache__
+Testing/__pycache__
+Utils/__pycache__
+Views/__pycache__
