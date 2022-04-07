@@ -1,15 +1,28 @@
 import numpy as np
+import math
 from scipy.spatial import ConvexHull
 from scipy.stats import gaussian_kde as kde, entropy
 from scipy.signal import welch
 from scipy.signal._savitzky_golay import savgol_filter
 
 def euclidianDist(x1, x2):
+    '''
+    :param x1: 1st position
+    :param x2: 2nd position
+    :return: Euclidian distance between two points
+    '''
     dist = np.sqrt(np.sum(np.power(x1 - x2, 2), 1))
     return dist
 
 
-def computeVelocityAccel(time, gaze, n, poly):
+def computeVelocityAccel(gaze, n, poly):
+    '''
+    Compute velocity and gaze acceleration using savgol filter
+    :param gaze: gaze data
+    :param n: window length of the filter
+    :param poly: order of the polynominal
+    :return: velocity and acceleration
+    '''
     # x_filtered
     # first derivative
     gaze_x_d1 = savgol_filter(gaze[:, 0], n, polyorder=poly, deriv=1)
@@ -35,6 +48,11 @@ def computeVelocityAccel(time, gaze, n, poly):
 
 
 def convexHullArea(data):
+    '''
+    compute gaze area using convexhull algorithm
+    :param data: gaze position overtime
+    :return:
+    '''
     hull = ConvexHull(points=data[["GazeX", "GazeY"]].values)
     return hull.volume
 
@@ -124,7 +142,7 @@ def euclidianDistT(x, time=None, skip=3):
     dist = np.array([euclidianDist(x[i], x[i-skip]) for i in range(skip, len(x), 1)])
     return dist
 
-def anglesEstimation(data, skip=3):
+def anglesEstimation(data: np.ndarray, skip=3) -> np.ndarray:
     ''' compute angles of consecutive gazes
     :param data: a series
     :param skip: stride
@@ -134,3 +152,7 @@ def anglesEstimation(data, skip=3):
         [np.dot(data[i, :], data[i - skip, :]) / (np.linalg.norm(data[i, :]) * np.linalg.norm(data[i - skip, :])) for i in range(skip, len(data), 1)])
     angles = np.arccos(relu(angles))
     return angles
+
+def relu(x: np.ndarray) -> np.ndarray:
+    x[x<0.0] = 0.0
+    return x

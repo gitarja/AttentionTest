@@ -1,7 +1,7 @@
 import subprocess
 import os
 from Views.MainUI import Ui_MainWindow
-from Views.ObservationUI import Ui_ObservationUI
+from Views.EvaluationUI import Ui_ObservationUI
 from Views.TrainingSetupUI import Ui_TrainingSetupUI
 import sys
 import yaml
@@ -324,7 +324,7 @@ class MainController:
         elif mode == "Children":
             return turnFile + "_children.csv"
         elif mode == "Children-Sym-Asym":
-            return turnFile + "_sym_asym_children.csv"
+            return turnFile + "_sym_asym__perceptual_children.csv"
         else:
             return turnFile + "_def.csv"
 
